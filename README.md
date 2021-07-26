@@ -2,7 +2,7 @@
 Homeppl challenge
 
 ### 20-network
-Creates VPC and two subnets, public and private with routing tables and ACLs
+Creates VPC and two public and two private subnets with routing tables and ACLs
 
 ### 30-security-groups
 AWS security groups
@@ -11,4 +11,4 @@ AWS security groups
 Creates a load balancer for the public subnet
 
 ### 50-ec2
-Creates an EC2 instance with an nginx 
+Creates two EC2 instances in the public subnets with nginx

@@ -27,12 +27,33 @@ resource "aws_subnet" "homeppl-public-s1" {
 
 resource "aws_subnet" "homeppl-private-s1" {
     vpc_id                = "${aws_vpc.homeppl-vpc.id}"
-    cidr_block            = "10.0.10.0/24"
+    cidr_block            = "10.0.11.0/24"
     availability_zone     = "us-east-1"
 
     tags = {
         Name = "homeppl-private-s1"
     } 
+}
+
+resource "aws_subnet" "homeppl-public-s2" {
+    vpc_id                = "${aws_vpc.homeppl-vpc.id}"
+    cidr_block            = "10.0.2.0/24"
+    map_public_ip_on_launch = "true"
+    availability_zone     = "us-east-1"
+
+    tags = {
+        Name = "homeppl-public-s2"
+    }
+}
+
+resource "aws_subnet" "homeppl-private-s2" {
+    vpc_id                = "${aws_vpc.homeppl-vpc.id}"
+    cidr_block            = "10.0.12.0/24"
+    availability_zone     = "us-east-1"
+
+    tags = {
+        Name = "homeppl-private-s2"
+    }
 }
 
 resource "aws_internet_gateway" "homeppl-igw" {
@@ -61,10 +82,16 @@ resource "aws_route_table_association" "homeppl-crta-public-subnet-s1"{
     route_table_id      = "${aws_route_table.homeppl-public-crt.id}"
 }
 
+resource "aws_route_table_association" "homeppl-crta-public-subnet-s2"{
+    subnet_id           = "${aws_subnet.homeppl-public-s2.id}"
+    route_table_id      = "${aws_route_table.homeppl-public-crt.id}"
+}
   
+# We allow direct access to the public subnets and not only through the ELB
+
 resource "aws_network_acl" "homeppl-public-acl" {
     vpc_id = "${aws_vpc.homeppl-vpc.id}"
-    subnet_ids = ["${aws_subnet.homeppl-public-s1.id}"]
+    subnet_ids = ["${aws_subnet.homeppl-public-s1.id}","${aws_subnet.homeppl-public-s2.id}"]
 	
     egress {
 	rule_no = 1
@@ -92,6 +119,16 @@ resource "aws_network_acl" "homeppl-public-acl" {
 	action = "allow"
         cidr_block = "0.0.0.0/0"
     }
+
+# We open the port 22 to the public networks temporarily
+    ingress { 
+	rule_no = 110
+	from_port = 22
+	to_port = 22
+	protocol = "tcp"
+	action = "allow"
+        cidr_block = "0.0.0.0/0"
+    }
 	
     ingress { 
         rule_no = 120
@@ -105,36 +142,6 @@ resource "aws_network_acl" "homeppl-public-acl" {
     tags = {
         "Name" = "homeppl-public-acl"
     }
-}
-
-resource "aws_security_group" "http-allowed" {
-    vpc_id = "${aws_vpc.homeppl-vpc.id}"
-
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = -1
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    ingress {
-        from_port = 80
-        to_port = 80
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    ingress {
-        from_port = 443
-        to_port = 443
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    tags = {
-        Name = "http-allowed"
-    }
-}
-
-output "region" {
-    value = "${var.region}"
 }
 
 output "subnet-pub1" {
