@@ -18,7 +18,7 @@ resource "aws_subnet" "homeppl-public-s1" {
     vpc_id                = "${aws_vpc.homeppl-vpc.id}"
     cidr_block            = "10.0.1.0/24"
     map_public_ip_on_launch = "true"
-    availability_zone     = "us-east-1"
+    availability_zone     = "us-east-1a"
 
     tags = {
         Name = "homeppl-public-s1"
@@ -28,7 +28,7 @@ resource "aws_subnet" "homeppl-public-s1" {
 resource "aws_subnet" "homeppl-private-s1" {
     vpc_id                = "${aws_vpc.homeppl-vpc.id}"
     cidr_block            = "10.0.11.0/24"
-    availability_zone     = "us-east-1"
+    availability_zone     = "us-east-1a"
 
     tags = {
         Name = "homeppl-private-s1"
@@ -39,7 +39,7 @@ resource "aws_subnet" "homeppl-public-s2" {
     vpc_id                = "${aws_vpc.homeppl-vpc.id}"
     cidr_block            = "10.0.2.0/24"
     map_public_ip_on_launch = "true"
-    availability_zone     = "us-east-1"
+    availability_zone     = "us-east-1b"
 
     tags = {
         Name = "homeppl-public-s2"
@@ -49,7 +49,7 @@ resource "aws_subnet" "homeppl-public-s2" {
 resource "aws_subnet" "homeppl-private-s2" {
     vpc_id                = "${aws_vpc.homeppl-vpc.id}"
     cidr_block            = "10.0.12.0/24"
-    availability_zone     = "us-east-1"
+    availability_zone     = "us-east-1b"
 
     tags = {
         Name = "homeppl-private-s2"
@@ -120,16 +120,6 @@ resource "aws_network_acl" "homeppl-public-acl" {
         cidr_block = "0.0.0.0/0"
     }
 
-# We open the port 22 to the public networks temporarily
-    ingress { 
-	rule_no = 110
-	from_port = 22
-	to_port = 22
-	protocol = "tcp"
-	action = "allow"
-        cidr_block = "0.0.0.0/0"
-    }
-	
     ingress { 
         rule_no = 120
 	from_port = 0
