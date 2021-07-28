@@ -119,6 +119,15 @@ resource "aws_network_acl" "homeppl-public-acl" {
 	action = "allow"
         cidr_block = "0.0.0.0/0"
     }
+# Opening port 22 temporarily
+    ingress { 
+	rule_no = 115
+	from_port = 22
+	to_port = 22
+	protocol = "tcp"
+	action = "allow"
+        cidr_block = "0.0.0.0/0"
+    }
 
     ingress { 
         rule_no = 120
