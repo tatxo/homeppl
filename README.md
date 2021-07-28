@@ -14,10 +14,16 @@ Creates a load balancer for the public subnet
 Creates two EC2 instances in the public subnets with nginx
 
 ### nginx_ubuntu.json
-Ideally we create an AMI using *packer* with an nginx configured, however I would need more time for this. Tried to copy an opensource example available online but it did not plug and play well.
+Ideally we create an AMI using *packer* with an nginx configured, this is a packer file and it would need more work, so I am using the terraform provisioner instead.
+
+### nginx.sh
+Simple script to install nginx on instance provision (Terraform)
 
 ### list-services.sh
-Shell script to list all resources. Requires a file called resources with all the service resources currently supported by Config, as per aws cli documentation.
+Shell script to list all resources. 
+Requires:
+- a file called resources with all the service resources currently supported by Config, as per aws cli documentation. (provided)
+- jq
 
 ### list.py
-Script in python to list all resources created in previous stage. A complete list of an infractructure in production would probably require more coding, as shown in the open source python script available in GitHub 
+Script in python to list all resources created in previous stage with Terraform. A complete list of an infractructure in production would require more coding, as shown in the python script available in GitHub (MIT License) https://github.com/JohannesEbke/aws_list_all

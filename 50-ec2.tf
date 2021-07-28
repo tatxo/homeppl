@@ -19,10 +19,17 @@ resource "aws_instance" "web1" {
         ]
     }
     connection {
-        host = "$aws_instance.web1.private_ip"
-        type = "ssh"
-        user = "${var.ec2_user}"
+        host            = self.public_ip
+        port            = 22
+        type            = "ssh"
+        user            = "${var.ec2_user}"
         private_key = "${file("${var.private_key_path}")}"
+    }
+    tags = {
+        Name = "Web1"
+    }
+    volume_tags = {
+        Name = "Web1_HD"
     }
 }
 
@@ -47,10 +54,17 @@ resource "aws_instance" "web2" {
         ]
     }
     connection {
-        host = "$aws_instance.web2.private_ip"
-        type = "ssh"
-        user = "${var.ec2_user}"
-        private_key = "${file("${var.private_key_path}")}"
+        host            = self.public_ip
+        port            = 22
+        type            = "ssh"
+        user            = "${var.ec2_user}"
+        private_key     = "${file("${var.private_key_path}")}"
+    }
+    tags = {
+        Name    = "Web2"
+    }
+    volume_tags = {
+        Name    = "Web2_HD"
     }
 }
 
