@@ -137,6 +137,15 @@ resource "aws_network_acl" "homeppl-public-acl" {
 	action = "allow"
         cidr_block = "10.0.0.0/16"
     }
+
+    ingress { 
+	rule_no = 130
+	from_port = 32768
+	to_port = 65535
+	protocol = "tcp"
+	action = "allow"
+        cidr_block = "0.0.0.0/0"
+    }
 	
     tags = {
         "Name" = "homeppl-public-acl"
